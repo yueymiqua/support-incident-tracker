@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -21,25 +22,30 @@ export default function Home() {
         </p>
 
         <div className={styles.grid}>
-          <a href="http://localhost:3000/newuser" className={styles.card}>
-            <h2 style={{color: 'purple'}}>New User &rarr;</h2>
-            <p>Create an account first if you are not registered</p>
-          </a>
-
-          <a href="http://localhost:3000/login" className={styles.card}>
-            <h2 style={{color: 'purple'}}>Existing User Login &rarr;</h2>
-            <p>Login to your existing account</p>
-          </a>
-
-          <a href="http://localhost:3000/newincident" className={styles.card}>
-            <h2 style={{color: 'purple'}}>New Incident &rarr;</h2>
-            <p>Create an incident relating to your problem</p>
-          </a>
-
-          <a href="http://localhost:3000/allincidents"className={styles.card}>
-            <h2 style={{color: 'purple'}}>All Incidents &rarr;</h2>
-            <p>Go to a list of all existing incidents</p>
-          </a>
+          <Link href="/new-user">
+            <a className={styles.card}>
+              <h2 style={{color: 'purple'}}>New User &rarr;</h2>
+              <p>Create an account first if you are not registered</p>
+            </a>
+          </Link>
+          <Link href="/login" >
+            <a className={styles.card}>
+              <h2 style={{color: 'purple'}}>Existing User Login &rarr;</h2>
+              <p>Login to your existing account</p>
+            </a>
+          </Link>
+          <Link href="/new-incident">
+            <a className={styles.card}>
+              <h2 style={{color: 'purple'}}>New Incident &rarr;</h2>
+              <p>Create an incident relating to your problem</p>
+            </a>
+          </Link>
+          <Link href="/incidents"className={styles.card}>
+            <a className={styles.card}>
+              <h2 style={{color: 'purple'}}>All Incidents &rarr;</h2>
+              <p>Go to a list of all existing incidents</p>
+            </a>
+          </Link>
         </div>
       </main>
 
