@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,26 +11,6 @@ import Paper from '@material-ui/core/Paper';
 
 
 const incidents = () => {
-    // const reports = [
-    //     {
-    //         subject: 'subject1',
-    //         description: 'description1',
-    //         username: 'user1',
-    //         department: 'HR'
-    //     },
-    //     {
-    //         subject: 'subject2',
-    //         description: 'description2',
-    //         username: 'user2',
-    //         department: 'Admin'
-    //     },
-    //     {
-    //         subject: 'subject3',
-    //         description: 'description3',
-    //         username: 'user3',
-    //         department: 'Finance'
-    //     }
-    // ]
     
     const createData = (subject, description, username, department) => {
         return { subject, description, username, department };
@@ -43,9 +24,17 @@ const incidents = () => {
 
     const [filterByUser, setFilterByUser] = useState('')
 
+    const useStyles = makeStyles({
+        table: {
+          minWidth: 650,
+        },
+      });
+
+    const classes = useStyles();
+
     return (
         <TableContainer component={Paper}>
-            <Table className="table" aria-label="incident-table">
+            <Table className={classes.table} aria-label="incident-table">
                 <TableHead>
                     <TableRow>
                         <TableCell>Subject</TableCell>
@@ -58,9 +47,9 @@ const incidents = () => {
                     {reports.map((report, index) => (
                         <TableRow key={index}>
                             <TableCell component="th" scope="row">{report.subject}</TableCell>
-                            <tableCell align="right">{report.description}</tableCell>
-                            <tableCell align="right">{report.username}</tableCell>
-                            <tableCell align="right">{report.department}</tableCell>
+                            <TableCell align="right">{report.description}</TableCell>
+                            <TableCell align="right">{report.username}</TableCell>
+                            <TableCell align="right">{report.department}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
