@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { 
+    Table, 
+    TableBody, 
+    TableCell, 
+    TableContainer, 
+    TableHead, 
+    TableRow, 
+    TableSortLabel 
+} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const incidents = () => {
 
@@ -23,7 +25,15 @@ const incidents = () => {
     const [engineeringCheckboxOn, setEngineeringCheckboxOn] = useState(false);
     const [sortDirection, setSortDirection] = useState('asc');
     const [reports, setReports] = useState([]);
-    const [defaultReports, setDefaultReports] = useState([]);
+    const defaultReports = [
+        ['login credentials', 'not able to log in', 'Susan', 'HR', 'edit'],
+        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
+        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
+        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
+        ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'],
+        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'],
+        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit']
+    ];
     
     useEffect(() => {
         const createData = (subject, description, username, department, edit) => {
@@ -39,17 +49,12 @@ const incidents = () => {
             createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
             createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
         ])
-
-        setDefaultReports([
-            createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
-        ])
     },[])
+
+    useEffect(() => {
+        console.log(searchText)
+        //filter report here
+    },[searchText])
     
     const filterByDepartment = (dept) => {
         switch(dept) {
@@ -96,6 +101,10 @@ const incidents = () => {
         }
     }
 
+    const handleTextSearch = (e) => {
+        setSearchText(e.target.value);
+    }
+
     const useStyles = makeStyles({
         table: {
           minWidth: '650px',
@@ -132,7 +141,7 @@ const incidents = () => {
                 </FormControl>
                 <div className='textfield-container'>
                     <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
-                        <TextField style={{backgroundColor: 'white', minWidth: '250px'}} placeholder="Search for text in any column" onChange={(e) => setSearchText(e.target.value)}/>
+                        <TextField style={{backgroundColor: 'white', minWidth: '250px'}} placeholder="Search for text in any column" onChange={(e) => handleTextSearch(e)}/>
                     </FormControl>
                 </div>
                 <TableContainer component={Paper}>
