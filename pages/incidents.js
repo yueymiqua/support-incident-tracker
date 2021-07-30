@@ -106,7 +106,7 @@ const incidents = () => {
     const classes = useStyles();
 
     return (
-        <div style={{display: "flex", height: "100%", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
+        <div style={{display: "flex", height: "100%", minHeight: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
             <div style={{ textAlign: 'center' }}>
                 <h1>List of Existing Incidents</h1>
                 <FormControl component="fieldset" style={{borderBlockColor: 'black', borderBlockStyle: 'solid', borderBlockWidth: '1px', marginBottom: '10px'}}>
