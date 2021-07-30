@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -16,20 +16,85 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const incidents = () => {
 
-    const [searchText, setSearchText] = useState('')
-    const [sortDirection, setSortDirection] = useState('asc')
+    const [searchText, setSearchText] = useState('');
+    const [hrCheckboxOn, setHrCheckboxOn] = useState(false);
+    const [adminCheckboxOn, setAdminCheckboxOn] = useState(false);
+    const [financeCheckboxOn, setFinanceCheckboxOn] = useState(false);
+    const [engineeringCheckboxOn, setEngineeringCheckboxOn] = useState(false);
+    const [sortDirection, setSortDirection] = useState('asc');
+    const [reports, setReports] = useState([]);
+    const [defaultReports, setDefaultReports] = useState([]);
     
-    const createData = (subject, description, username, department, edit) => {
-        return { subject, description, username, department, edit };
+    useEffect(() => {
+        const createData = (subject, description, username, department, edit) => {
+            return [subject, description, username, department, edit];
+        }
+    
+        setReports([
+            createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
+        ])
+
+        setDefaultReports([
+            createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
+        ])
+    },[])
+    
+    const filterByDepartment = (dept) => {
+        switch(dept) {
+            case 'HR':
+              if(hrCheckboxOn === false){
+                const filteredReports = reports.filter(report => report[3] === dept);
+                setReports(filteredReports);
+                setHrCheckboxOn(true)
+              } else {
+                setReports(defaultReports);
+                setHrCheckboxOn(false)
+                }
+              break;
+              case 'Admin':
+                if(adminCheckboxOn === false){
+                  const filteredReports = reports.filter(report => report[3] === dept);
+                  setReports(filteredReports);
+                  setAdminCheckboxOn(true)
+                } else {
+                  setReports(defaultReports);
+                  setAdminCheckboxOn(false)
+                  }
+                break;
+                case 'Finance':
+                    if(financeCheckboxOn === false){
+                        const filteredReports = reports.filter(report => report[3] === dept);
+                        setReports(filteredReports);
+                        setFinanceCheckboxOn(true)
+                    } else {
+                        setReports(defaultReports);
+                        setFinanceCheckboxOn(false)
+                        }
+                break;
+                case 'Engineering':
+                    if(engineeringCheckboxOn === false){
+                        const filteredReports = reports.filter(report => report[3] === dept);
+                        setReports(filteredReports);
+                        setEngineeringCheckboxOn(true)
+                    } else {
+                        setReports(defaultReports);
+                        setEngineeringCheckboxOn(false)
+                        }
+                break;
+        }
     }
-
-    const reports = [
-        createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
-        createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-        createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
-        createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
-
-    ]
 
     const useStyles = makeStyles({
         table: {
@@ -41,26 +106,26 @@ const incidents = () => {
     const classes = useStyles();
 
     return (
-        <div style={{display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
+        <div style={{display: "flex", height: "100%", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
             <div style={{ textAlign: 'center' }}>
                 <h1>List of Existing Incidents</h1>
                 <FormControl component="fieldset" style={{borderBlockColor: 'black', borderBlockStyle: 'solid', borderBlockWidth: '1px', marginBottom: '10px'}}>
                     <FormLabel component="legend" style={{ color: 'steelblue'}}>Filter Issues By Department</FormLabel>
                     <FormGroup style={{display: 'inline'}}>
                         <FormControlLabel
-                            control={<Checkbox name="HR" />}
+                            control={<Checkbox name="HR" checked={hrCheckboxOn} onChange={() => filterByDepartment("HR")}/>}
                             label="HR"
                         />
                         <FormControlLabel
-                            control={<Checkbox name="Admin" />}
+                            control={<Checkbox name="Admin" checked={adminCheckboxOn} onChange={() => filterByDepartment("Admin")}/>}
                             label="Admin"
                         />
                         <FormControlLabel
-                            control={<Checkbox name="Finance" />}
+                            control={<Checkbox name="Finance" checked={financeCheckboxOn} onChange={() => filterByDepartment("Finance")}/>}
                             label="Finance"
                         />
                         <FormControlLabel
-                            control={<Checkbox name="Engineering" />}
+                            control={<Checkbox name="Engineering" checked={engineeringCheckboxOn} onChange={() => filterByDepartment("Engineering")}/>}
                             label="Engineering"
                         />
                     </FormGroup>
@@ -84,19 +149,21 @@ const incidents = () => {
                         <TableBody>
                             {reports.map((report, index) => (
                                 <TableRow key={index}>
-                                    <TableCell component="th" scope="row">{report.subject}</TableCell>
-                                    <TableCell align="right">{report.description}</TableCell>
-                                    <TableCell align="right">{report.username}</TableCell>
-                                    <TableCell align="right">{report.department}</TableCell>
+                                    <TableCell component="th" scope="row">{report[0]}</TableCell>
+                                    <TableCell align="right">{report[1]}</TableCell>
+                                    <TableCell align="right">{report[2]}</TableCell>
+                                    <TableCell align="right">{report[3]}</TableCell>
                                     <TableCell align="right">
-                                        <Button style={{color: 'blue'}}>{report.edit}</Button>
+                                        <Button style={{color: 'blue'}}>{report[4]}</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Link href="/">Back</Link>
+                <div style={{marginTop: '20px', marginBottom: '100px'}}>
+                    <Link href="/">Back</Link>
+                </div>
             </div>
         </div>
     )
