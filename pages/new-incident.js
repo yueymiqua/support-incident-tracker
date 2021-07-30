@@ -3,6 +3,7 @@ import { Input, InputLabel, TextareaAutosize, FormControl, Select, MenuItem, But
 import Link from 'next/link'
 
 const newIncident = () => {
+    const user = 'user1';
     const departments = ["HR", "Admin", "Finance", "Engineering"]
     const [subject, setSubject] = useState('')
     const [description, setDescription] = useState('')
@@ -14,8 +15,9 @@ const newIncident = () => {
         setSubject('');
         setDescription('');
         setDepartment('');
+        window.location.replace('/incidents');
     }
-
+    if(user){
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
             <form className='form-container' style={{textAlign: "center"}} onSubmit={(e) =>  handleSubmit(e)}>
@@ -52,6 +54,10 @@ const newIncident = () => {
             </form>
         </div>
     )
+
+    } else {
+        window.location.replace('login')
+    }
 }
 
 export default newIncident

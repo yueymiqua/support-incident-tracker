@@ -11,8 +11,13 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const incidents = () => {
+
+    const [searchText, setSearchText] = useState('')
+    const [sortDirection, setSortDirection] = useState('asc')
     
     const createData = (subject, description, username, department, edit) => {
         return { subject, description, username, department, edit };
@@ -26,23 +31,21 @@ const incidents = () => {
 
     ]
 
-    const [filterByUser, setFilterByUser] = useState('')
+    const useStyles = makeStyles({
+        table: {
+          minWidth: '650px',
+          maxWidth: '1000px'
+        },
+      });
 
-    // const useStyles = makeStyles({
-    //     table: {
-    //       minWidth: '650px',
-    //       maxWidth: '1000px'
-    //     },
-    //   });
-
-    // const classes = useStyles();
+    const classes = useStyles();
 
     return (
         <div style={{display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
             <div style={{ textAlign: 'center' }}>
                 <h1>List of Existing Incidents</h1>
-                <FormControl component="fieldset" style={{borderBlockColor: 'black', borderBlockStyle: 'solid', borderBlockWidth: '1px'}}>
-                    <FormLabel component="legend">Sort Issues By Department</FormLabel>
+                <FormControl component="fieldset" style={{borderBlockColor: 'black', borderBlockStyle: 'solid', borderBlockWidth: '1px', marginBottom: '10px'}}>
+                    <FormLabel component="legend" style={{ color: 'steelblue'}}>Filter Issues By Department</FormLabel>
                     <FormGroup style={{display: 'inline'}}>
                         <FormControlLabel
                             control={<Checkbox name="HR" />}
@@ -62,15 +65,20 @@ const incidents = () => {
                         />
                     </FormGroup>
                 </FormControl>
+                <div className='textfield-container'>
+                    <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
+                        <TextField style={{backgroundColor: 'white', minWidth: '250px'}} placeholder="Search for text in any column" onChange={(e) => setSearchText(e.target.value)}/>
+                    </FormControl>
+                </div>
                 <TableContainer component={Paper}>
-                    <Table aria-label="incident-table" style={{minWidth: '650px', maxWidth: '1000px'}}>
+                    <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Subject</TableCell>
-                                <TableCell align="right">Details of Incident</TableCell>
-                                <TableCell align="right">Created By</TableCell>
-                                <TableCell align="right">Related Department</TableCell>
-                                <TableCell align="right">Edit</TableCell>
+                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
+                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
+                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
+                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
+                                <TableCell align="center">Edit</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
