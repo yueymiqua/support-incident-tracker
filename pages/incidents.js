@@ -67,45 +67,45 @@ const incidents = () => {
     const filterByDepartment = (dept) => {
         switch(dept) {
             case 'HR':
-              if(hrCheckboxOn === false){
-                const filteredReports = reports.filter(report => report[3] === dept);
-                setReports(filteredReports);
-                setHrCheckboxOn(true)
-              } else {
-                setReports(defaultReports);
-                setHrCheckboxOn(false)
-                }
-              break;
-              case 'Admin':
-                if(adminCheckboxOn === false){
-                  const filteredReports = reports.filter(report => report[3] === dept);
-                  setReports(filteredReports);
-                  setAdminCheckboxOn(true)
+                if(hrCheckboxOn === false){
+                    const filteredReports = reports.filter(report => report[3] === dept);
+                    setReports(filteredReports);
+                    setHrCheckboxOn(true)
                 } else {
-                  setReports(defaultReports);
-                  setAdminCheckboxOn(false)
-                  }
-                break;
-                case 'Finance':
-                    if(financeCheckboxOn === false){
-                        const filteredReports = reports.filter(report => report[3] === dept);
-                        setReports(filteredReports);
-                        setFinanceCheckboxOn(true)
-                    } else {
-                        setReports(defaultReports);
-                        setFinanceCheckboxOn(false)
-                        }
-                break;
-                case 'Engineering':
-                    if(engineeringCheckboxOn === false){
-                        const filteredReports = reports.filter(report => report[3] === dept);
-                        setReports(filteredReports);
-                        setEngineeringCheckboxOn(true)
-                    } else {
-                        setReports(defaultReports);
-                        setEngineeringCheckboxOn(false)
-                        }
-                break;
+                    setReports(defaultReports);
+                    setHrCheckboxOn(false)
+                }
+            break;
+            case 'Admin':
+                if(adminCheckboxOn === false){
+                    const filteredReports = reports.filter(report => report[3] === dept);
+                    setReports(filteredReports);
+                    setAdminCheckboxOn(true)
+                } else {
+                    setReports(defaultReports);
+                    setAdminCheckboxOn(false)
+                }
+            break;
+            case 'Finance':
+                if(financeCheckboxOn === false){
+                    const filteredReports = reports.filter(report => report[3] === dept);
+                    setReports(filteredReports);
+                    setFinanceCheckboxOn(true)
+                } else {
+                    setReports(defaultReports);
+                    setFinanceCheckboxOn(false)
+                }
+            break;
+            case 'Engineering':
+                if(engineeringCheckboxOn === false){
+                    const filteredReports = reports.filter(report => report[3] === dept);
+                    setReports(filteredReports);
+                    setEngineeringCheckboxOn(true)
+                } else {
+                    setReports(defaultReports);
+                    setEngineeringCheckboxOn(false)
+                }
+            break;
         }
     }
 
@@ -118,8 +118,74 @@ const incidents = () => {
         setSearchText('')
     }
 
-    const handleSortDirection = () => {
+    const handleSortDirection = (columnName) => {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+        switch(columnName) {
+            case 'Subject':
+                if(sortDirection === 'asc'){
+                    reports.sort()
+                } else {
+                    reports.reverse()
+                }
+            break;
+            case 'DetailsOfIncident':
+                if(sortDirection === 'asc'){
+                    reports.map(report => {
+                        report.unshift(report[1])
+                    })
+                    reports.sort()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                } else {
+                    reports.map(report => {
+                        report.unshift(report[1])
+                    })
+                    reports.reverse()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                }
+            break;
+            case 'CreatedBy':
+                if(sortDirection === 'asc'){
+                    reports.map(report => {
+                        report.unshift(report[2])
+                    })
+                    reports.sort()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                } else {
+                    reports.map(report => {
+                        report.unshift(report[2])
+                    })
+                    reports.reverse()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                }
+            break;
+            case 'RelatedDepartment':
+                if(sortDirection === 'asc'){
+                    reports.map(report => {
+                        report.unshift(report[3])
+                    })
+                    reports.sort()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                } else {
+                    reports.map(report => {
+                        report.unshift(report[3])
+                    })
+                    reports.reverse()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                }
+            break;
+        }
     }
 
     const useStyles = makeStyles({
@@ -168,10 +234,10 @@ const incidents = () => {
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
-                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
-                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
-                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
+                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Subject")}/></TableCell>
+                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("DetailsOfIncident")}/></TableCell>
+                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("CreatedBy")}/></TableCell>
+                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("RelatedDepartment")}/></TableCell>
                                 <TableCell align="center">Edit</TableCell>
                             </TableRow>
                         </TableHead>
