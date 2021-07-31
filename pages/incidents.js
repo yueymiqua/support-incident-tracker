@@ -28,11 +28,11 @@ const incidents = () => {
     const defaultReports = [
         ['login credentials', 'not able to log in', 'Susan', 'HR', 'edit'],
         ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
-        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
-        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
+        ['phone', 'unable to recieve calls', 'Courtney', 'Admin', 'edit'],
+        ['headset', 'no sound from one ear', 'Richard', 'Admin', 'edit'],
         ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'],
         ['monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'],
-        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit']
+        ['internet', 'no internet connection', 'Ashley', 'Engineering', 'edit']
     ];
     
     useEffect(() => {
@@ -43,17 +43,25 @@ const incidents = () => {
         setReports([
             createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
             createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
+            createData('phone', 'unable to recieve calls', 'Courtney', 'Admin', 'edit'),
+            createData('headset', 'no sound from one ear', 'Richard', 'Admin', 'edit'),
             createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
             createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit')
+            createData('internet', 'no internet connection', 'Ashley', 'Engineering', 'edit')
         ])
     },[])
 
     useEffect(() => {
-        console.log(searchText)
-        //filter report here
+        const reportConsistingOfSearchText = []
+        console.log(searchText);
+        const filterBySearchText = reports.map((report) => {
+                if(report.join(' ').includes(searchText)){
+                    reportConsistingOfSearchText.push(report)
+                }
+            })
+        if(reportConsistingOfSearchText.length > 0){
+            setReports(reportConsistingOfSearchText);
+        }
     },[searchText])
     
     const filterByDepartment = (dept) => {
@@ -105,6 +113,15 @@ const incidents = () => {
         setSearchText(e.target.value);
     }
 
+    const handleClearSearch = () => {
+        setReports(defaultReports)
+        setSearchText('')
+    }
+
+    const handleSortDirection = () => {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    }
+
     const useStyles = makeStyles({
         table: {
           minWidth: '650px',
@@ -141,17 +158,20 @@ const incidents = () => {
                 </FormControl>
                 <div className='textfield-container'>
                     <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
-                        <TextField style={{backgroundColor: 'white', minWidth: '250px'}} placeholder="Search for text in any column" onChange={(e) => handleTextSearch(e)}/>
+                        <div style={{display: 'flex'}}>
+                            <TextField style={{ backgroundColor: 'white', minWidth: '250px' }} value={searchText} placeholder="Text search for any report column" onChange={(e) => handleTextSearch(e)}/>
+                            <Button style={{ color: 'crimson', background: 'salmon' }} onClick={() => handleClearSearch()}>Clear</Button>
+                        </div>
                     </FormControl>
                 </div>
                 <TableContainer component={Paper}>
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
-                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
-                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
-                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}/></TableCell>
+                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
+                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
+                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
+                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection()}/></TableCell>
                                 <TableCell align="center">Edit</TableCell>
                             </TableRow>
                         </TableHead>
