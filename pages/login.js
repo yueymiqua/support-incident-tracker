@@ -3,7 +3,6 @@ import { Input, InputLabel, FormControl, Button } from '@material-ui/core'
 import Link from 'next/link'
 
 const login = () => {
-    const departments = ["HR", "Admin", "Finance", "Engineering"]
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [department, setDepartment] = useState('')

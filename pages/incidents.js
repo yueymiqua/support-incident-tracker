@@ -55,7 +55,6 @@ const incidents = () => {
 
     useEffect(() => {
         const reportConsistingOfSearchText = []
-        console.log(searchText);
         const filterBySearchText = reports.map((report) => {
                 if(report.join(' ').includes(searchText)){
                     reportConsistingOfSearchText.push(report)
@@ -228,16 +227,16 @@ const incidents = () => {
                     <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
                         <div style={{display: 'flex'}}>
                             <TextField 
-                                style={{ backgroundColor: 'white', minWidth: '250px', borderRadius: '3px' }} 
+                                style={{ backgroundColor: 'ivory', minWidth: '250px', borderRadius: '3px' }} 
                                 value={searchText} placeholder="Text search for any report column" 
                                 onKeyDown={(e) => { if (e.key === 'Backspace'){ setReports(defaultReports), setSearchText(e.target.value) }}} 
                                 onChange={(e) => handleTextSearch(e)}/>
-                            <Button style={{ color: 'ivory', background: 'blue', marginLeft: '5px' }} onClick={() => handleClearSearch()}>Clear</Button>
+                            <Button style={{ color: 'ivory', background: 'steelblue', marginLeft: '5px' }} onClick={() => handleClearSearch()}>Clear</Button>
                         </div>
                     </FormControl>
                 </div>
                 <TableContainer component={Paper}>
-                    <FormLabel>Columns can be sorted alphabetically</FormLabel>
+                    <FormLabel style={{ color: 'steelblue' }}>Columns can be sorted alphabetically</FormLabel>
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
@@ -264,8 +263,10 @@ const incidents = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div style={{marginTop: '20px', marginBottom: '100px'}}>
-                    <Link href="/">Back</Link>
+                <div style={{ marginTop: '20px', marginBottom: '100px'}}>
+                    <Link href="/new-incident"><Button style={{ color: 'ivory', backgroundColor: 'steelblue', marginBottom: '10px' }}>Create New Incident</Button></Link>
+                    <br></br>
+                    <Link href="/"><Button style={{ color: 'ivory', backgroundColor: 'purple' }}>Back</Button></Link>
                 </div>
             </div>
         </div>
