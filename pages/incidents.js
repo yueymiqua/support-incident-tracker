@@ -15,6 +15,8 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
+import CancelIcon from '@material-ui/icons/Cancel';
+import EditIcon from '@material-ui/icons/Edit';
 
 const incidents = () => {
 
@@ -235,6 +237,7 @@ const incidents = () => {
                     </FormControl>
                 </div>
                 <TableContainer component={Paper}>
+                    <FormLabel labelPlacement="start">Columns can be sorted alphabetically</FormLabel>
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
@@ -249,12 +252,12 @@ const incidents = () => {
                             {reports.map((report, index) => (
                                 <TableRow key={index}>
                                     <TableCell component="th" scope="row">{report[0]}</TableCell>
-                                    <TableCell align="right">{report[1]}</TableCell>
-                                    <TableCell align="right">{report[2]}</TableCell>
-                                    <TableCell align="right">{report[3]}</TableCell>
+                                    <TableCell align="center">{report[1]}</TableCell>
+                                    <TableCell align="center">{report[2]}</TableCell>
+                                    <TableCell align="center">{report[3]}</TableCell>
                                     <TableCell align="center">
-                                        <Button style={{color: 'blue'}}>{report[4]}</Button>
-                                        <Button style={{color: 'red'}}>X</Button>
+                                        <Button><EditIcon style={{color: 'blue'}}/></Button>
+                                        <Button><CancelIcon style={{color: 'red'}}/></Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
