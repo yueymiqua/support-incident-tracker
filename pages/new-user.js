@@ -14,6 +14,7 @@ const newUser = () => {
         setUsername('');
         setPassword('');
         setDepartment('');
+        window.location.replace('/login');
     }
 
     return (

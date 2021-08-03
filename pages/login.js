@@ -14,6 +14,7 @@ const login = () => {
         setUsername('');
         setPassword('');
         setDepartment('');
+        window.location.replace('/incidents');
     }
 
     return (
