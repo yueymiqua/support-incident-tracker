@@ -237,7 +237,7 @@ const incidents = () => {
                     </FormControl>
                 </div>
                 <TableContainer component={Paper}>
-                    <FormLabel labelPlacement="start">Columns can be sorted alphabetically</FormLabel>
+                    <FormLabel>Columns can be sorted alphabetically</FormLabel>
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
