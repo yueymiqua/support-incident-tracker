@@ -226,11 +226,11 @@ const incidents = () => {
                     <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
                         <div style={{display: 'flex'}}>
                             <TextField 
-                                style={{ backgroundColor: 'white', minWidth: '250px' }} 
+                                style={{ backgroundColor: 'white', minWidth: '250px', borderRadius: '3px' }} 
                                 value={searchText} placeholder="Text search for any report column" 
                                 onKeyDown={(e) => { if (e.key === 'Backspace'){ setReports(defaultReports), setSearchText(e.target.value) }}} 
                                 onChange={(e) => handleTextSearch(e)}/>
-                            <Button style={{ color: 'crimson', background: 'salmon' }} onClick={() => handleClearSearch()}>Clear</Button>
+                            <Button style={{ color: 'ivory', background: 'blue', marginLeft: '5px' }} onClick={() => handleClearSearch()}>Clear</Button>
                         </div>
                     </FormControl>
                 </div>
@@ -242,7 +242,7 @@ const incidents = () => {
                                 <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("DetailsOfIncident")}/></TableCell>
                                 <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("CreatedBy")}/></TableCell>
                                 <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("RelatedDepartment")}/></TableCell>
-                                <TableCell align="center">Edit</TableCell>
+                                <TableCell align="center">Edit/Delete</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -252,8 +252,9 @@ const incidents = () => {
                                     <TableCell align="right">{report[1]}</TableCell>
                                     <TableCell align="right">{report[2]}</TableCell>
                                     <TableCell align="right">{report[3]}</TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="center">
                                         <Button style={{color: 'blue'}}>{report[4]}</Button>
+                                        <Button style={{color: 'red'}}>X</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
