@@ -225,7 +225,11 @@ const incidents = () => {
                 <div className='textfield-container'>
                     <FormControl component="fieldset" style={{width: '250px', marginBottom: '10px'}}>
                         <div style={{display: 'flex'}}>
-                            <TextField style={{ backgroundColor: 'white', minWidth: '250px' }} value={searchText} placeholder="Text search for any report column" onChange={(e) => handleTextSearch(e)}/>
+                            <TextField 
+                                style={{ backgroundColor: 'white', minWidth: '250px' }} 
+                                value={searchText} placeholder="Text search for any report column" 
+                                onKeyDown={(e) => { if (e.key === 'Backspace'){ setReports(defaultReports), setSearchText(e.target.value) }}} 
+                                onChange={(e) => handleTextSearch(e)}/>
                             <Button style={{ color: 'crimson', background: 'salmon' }} onClick={() => handleClearSearch()}>Clear</Button>
                         </div>
                     </FormControl>
