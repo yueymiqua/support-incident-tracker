@@ -31,7 +31,7 @@ const newUser = () => {
                     <FormControl required>
                         <InputLabel id="password-label" style={{background: "white"}}>Password</InputLabel>
                         <Input id="password" placeholder="password" value={password} onInput={(e) => setPassword(e.target.value)}/>
-                    <FormHelperText id="my-helper-text">We'll never share your password.</FormHelperText>
+                    <FormHelperText id="my-helper-text">We won't share your password.</FormHelperText>
                 </FormControl>
                 </div>
                 <div>

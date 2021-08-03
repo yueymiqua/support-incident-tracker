@@ -228,7 +228,7 @@ const incidents = () => {
                         <div style={{display: 'flex'}}>
                             <TextField 
                                 style={{ backgroundColor: 'ivory', minWidth: '250px', borderRadius: '3px' }} 
-                                value={searchText} placeholder="Text search for any report column" 
+                                value={searchText} placeholder="Text search for any column" 
                                 onKeyDown={(e) => { if (e.key === 'Backspace'){ setReports(defaultReports), setSearchText(e.target.value) }}} 
                                 onChange={(e) => handleTextSearch(e)}/>
                             <Button style={{ color: 'ivory', background: 'steelblue', marginLeft: '5px' }} onClick={() => handleClearSearch()}>Clear</Button>

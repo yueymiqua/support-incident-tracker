@@ -30,7 +30,7 @@ const newIncident = () => {
                 </div>
                 <div>
                     <FormControl required>
-                        <TextareaAutosize minRows={3} placeholder="Describe your problem" value={description} onInput={(e) => setDescription(e.target.value)}/>
+                        <TextareaAutosize minRows={5} style={{ minWidth: '10vw' }} placeholder="Describe your problem" value={description} onInput={(e) => setDescription(e.target.value)}/>
                     </FormControl>
                 </div>
                 <div>
