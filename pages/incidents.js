@@ -21,21 +21,19 @@ import EditIcon from '@material-ui/icons/Edit';
 const incidents = () => {
 
     const [searchText, setSearchText] = useState('');
-    const [hrCheckboxOn, setHrCheckboxOn] = useState(false);
-    const [adminCheckboxOn, setAdminCheckboxOn] = useState(false);
-    const [financeCheckboxOn, setFinanceCheckboxOn] = useState(false);
-    const [engineeringCheckboxOn, setEngineeringCheckboxOn] = useState(false);
+    const [hrCheckboxOn, setHrCheckboxOn] = useState(true);
+    const [adminCheckboxOn, setAdminCheckboxOn] = useState(true);
+    const [financeCheckboxOn, setFinanceCheckboxOn] = useState(true);
     const [sortDirection, setSortDirection] = useState('asc');
     const [reports, setReports] = useState([]);
     const defaultReports = [
         ['login credentials', 'not able to log in', 'Susan', 'HR'],
-        ['email access', 'missing emails from inbox', 'Tim', 'Admin'],
+        ['email access', 'missing emails from inbox', 'Tim', 'HR'],
         ['phone', 'unable to recieve calls', 'Courtney', 'Admin'],
         ['headset', 'no sound from one ear', 'Richard', 'Admin'],
         ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'],
-        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering'],
-        ['internet', 'no internet connection', 'Ashley', 'Engineering'],
-        ['internet', 'no internet connection', 'Ashley', 'Engineering']
+        ['monitor', 'screen not displaying image', 'Ellen', 'Finance'],
+        ['internet', 'no internet connection', 'Ashley', 'Finance']
     ];
     
     useEffect(() => {
@@ -45,12 +43,12 @@ const incidents = () => {
     
         setReports([
             createData('login credentials', 'not able to log in', 'Susan', 'HR'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'HR'),
             createData('phone', 'unable to recieve calls', 'Courtney', 'Admin'),
             createData('headset', 'no sound from one ear', 'Richard', 'Admin'),
             createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering'),
-            createData('internet', 'no internet connection', 'Ashley', 'Engineering')
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Finance'),
+            createData('internet', 'no internet connection', 'Ashley', 'Finance')
         ])
     },[])
 
@@ -69,43 +67,36 @@ const incidents = () => {
     const filterByDepartment = (dept) => {
         switch(dept) {
             case 'HR':
-                if(hrCheckboxOn === false){
-                    const filteredReports = reports.filter(report => report[3] === dept);
+                if(hrCheckboxOn === true){
+                    const filteredReports = reports.filter(report => report[3] !== dept);
                     setReports(filteredReports);
-                    setHrCheckboxOn(true)
-                } else {
-                    setReports(defaultReports);
                     setHrCheckboxOn(false)
+                } else {
+                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    setReports(reports.concat(filteredReports));
+                    setHrCheckboxOn(true)
                 }
             break;
             case 'Admin':
-                if(adminCheckboxOn === false){
-                    const filteredReports = reports.filter(report => report[3] === dept);
+                if(adminCheckboxOn === true){
+                    const filteredReports = reports.filter(report => report[3] !== dept);
                     setReports(filteredReports);
-                    setAdminCheckboxOn(true)
-                } else {
-                    setReports(defaultReports);
                     setAdminCheckboxOn(false)
+                } else {
+                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    setReports(reports.concat(filteredReports));
+                    setAdminCheckboxOn(true)
                 }
             break;
             case 'Finance':
-                if(financeCheckboxOn === false){
-                    const filteredReports = reports.filter(report => report[3] === dept);
+                if(financeCheckboxOn === true){
+                    const filteredReports = reports.filter(report => report[3] !== dept);
                     setReports(filteredReports);
-                    setFinanceCheckboxOn(true)
-                } else {
-                    setReports(defaultReports);
                     setFinanceCheckboxOn(false)
-                }
-            break;
-            case 'Engineering':
-                if(engineeringCheckboxOn === false){
-                    const filteredReports = reports.filter(report => report[3] === dept);
-                    setReports(filteredReports);
-                    setEngineeringCheckboxOn(true)
                 } else {
-                    setReports(defaultReports);
-                    setEngineeringCheckboxOn(false)
+                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    setReports(reports.concat(filteredReports));
+                    setFinanceCheckboxOn(true)
                 }
             break;
         }
@@ -217,10 +208,6 @@ const incidents = () => {
                         <FormControlLabel
                             control={<Checkbox name="Finance" checked={financeCheckboxOn} onChange={() => filterByDepartment("Finance")}/>}
                             label="Finance"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox name="Engineering" checked={engineeringCheckboxOn} onChange={() => filterByDepartment("Engineering")}/>}
-                            label="Engineering"
                         />
                     </FormGroup>
                 </FormControl>
