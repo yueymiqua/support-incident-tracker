@@ -76,8 +76,8 @@ export default function Home() {
     <div className={styles.container}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon onClick={handleClick}/>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClick}>
+            <MenuIcon />
           </IconButton>
           <StyledMenu
         id="customized-menu"
