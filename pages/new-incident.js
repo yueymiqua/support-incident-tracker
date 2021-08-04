@@ -49,8 +49,8 @@ const newIncident = () => {
                         </Select>
                     </FormControl>
                 </div>
-                <Button type="submit">Submit</Button><br></br>
-                <Link href="/">Back</Link>
+                <Button type="submit" style={{ color: 'ivory', backgroundColor: 'steelblue', margin: '10px 0px'}}>Submit</Button><br></br>
+                <Link href="/"><Button style={{ color: 'ivory', backgroundColor: 'purple' }}>Back</Button></Link>
             </form>
         </div>
     )

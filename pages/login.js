@@ -32,8 +32,8 @@ const login = () => {
                         <Input id="password" aria-describedby="my-helper-text" placeholder="password" value={password} onInput={(e) => setPassword(e.target.value)}/>
                 </FormControl>
                 </div>
-                <Button type="submit">Login</Button><br></br>
-                <Link href="/">Back</Link>
+                <Button type="submit" style={{ color: 'ivory', backgroundColor: 'steelblue', margin: '10px 0px'}}>Login</Button><br></br>
+                <Link href="/"><Button style={{ color: 'ivory', backgroundColor: 'purple' }}>Back</Button></Link>
             </form>
         </div>
     )
