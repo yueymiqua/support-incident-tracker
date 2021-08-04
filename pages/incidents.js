@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField';
-import CancelIcon from '@material-ui/icons/Cancel';
 import EditIcon from '@material-ui/icons/Edit';
 
 const incidents = () => {
@@ -27,28 +26,28 @@ const incidents = () => {
     const [sortDirection, setSortDirection] = useState('asc');
     const [reports, setReports] = useState([]);
     const defaultReports = [
-        ['login credentials', 'not able to log in', 'Susan', 'HR'],
-        ['email access', 'missing emails from inbox', 'Tim', 'HR'],
-        ['phone', 'unable to recieve calls', 'Courtney', 'Admin'],
-        ['headset', 'no sound from one ear', 'Richard', 'Admin'],
-        ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'],
-        ['monitor', 'screen not displaying image', 'Ellen', 'Finance'],
-        ['internet', 'no internet connection', 'Ashley', 'Finance']
+        ['not able to log in', 'HR', 'HIGH', 'Susan', 'OPEN', '109238049', '109238049', 'resolver', ''],
+        ['missing emails from inbox', 'HR', 'MEDIUM', 'Tim', 'DONE', '823749827', '183749283', 'resolver', 'internet back on'],
+        ['unable to recieve calls', 'Admin', 'MEDIUM', 'Courtney', 'IN-PROGRESS', '193849834', '398410343', 'resolver', 'contacting phone company'], ,
+        ['no sound from one ear', 'Admin', 'LOW', 'Richard', 'OPEN', '283405949', '203894759', 'resolver', ''], ,
+        ['missing paystubs from 2019', 'Finance', 'LOW', 'Benedict', 'DONE', '103948394', '993848283', 'resolver', 'resent paystubs'], ,
+        ['screen not displaying image', 'Finance', 'HIGH', 'Ellen', 'IN-PROGRESS', '483985483', '193948584', 'resolver', 'purchasing new screen'], ,
+        ['no internet connection', 'Finance', 'HIGH', 'Ashley', 'IN-PROGRESS', '129398282', '594859384', 'resolver', 'restarting router/modem']
     ];
     
     useEffect(() => {
-        const createData = (subject, description, username, department) => {
-            return [subject, description, username, department];
+        const createData = (description, department, priority, initiator, status, crtn_dt, uptd_dt, resolver, resolver_comments) => {
+            return [description, department, priority, initiator, status, crtn_dt, uptd_dt, resolver, resolver_comments];
         }
     
         setReports([
-            createData('login credentials', 'not able to log in', 'Susan', 'HR'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'HR'),
-            createData('phone', 'unable to recieve calls', 'Courtney', 'Admin'),
-            createData('headset', 'no sound from one ear', 'Richard', 'Admin'),
-            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Finance'),
-            createData('internet', 'no internet connection', 'Ashley', 'Finance')
+            createData('not able to log in', 'HR', 'HIGH', 'Susan', 'OPEN', '109238049', '109238049', 'resolver', ''),
+            createData('missing emails from inbox', 'HR', 'MEDIUM', 'Tim', 'DONE', '823749827', '183749283', 'resolver', 'internet back on'),
+            createData('unable to recieve calls', 'Admin', 'MEDIUM', 'Courtney', 'IN-PROGRESS', '193849834', '398410343', 'resolver', 'contacting phone company'),
+            createData('no sound from one ear', 'Admin', 'LOW', 'Richard', 'OPEN', '283405949', '203894759', 'resolver', ''),
+            createData('missing paystubs from 2019', 'Finance', 'LOW', 'Benedict', 'DONE', '103948394', '993848283', 'resolver', 'resent paystubs'),
+            createData('screen not displaying image', 'Finance', 'HIGH', 'Ellen', 'IN-PROGRESS', '483985483', '193948584', 'resolver', 'purchasing new screen'),
+            createData('no internet connection', 'Finance', 'HIGH', 'Ashley', 'IN-PROGRESS', '129398282', '594859384', 'resolver', 'restarting router/modem')
         ])
     },[])
 
@@ -63,38 +62,38 @@ const incidents = () => {
             setReports(reportConsistingOfSearchText);
         }
     },[searchText])
-    
+
     const filterByDepartment = (dept) => {
         switch(dept) {
             case 'HR':
                 if(hrCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[3] !== dept);
+                    const filteredReports = reports.filter(report => report[1] !== dept);
                     setReports(filteredReports);
                     setHrCheckboxOn(false)
                 } else {
-                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    const filteredReports = defaultReports.filter(report => report[1] === dept);
                     setReports(reports.concat(filteredReports));
                     setHrCheckboxOn(true)
                 }
             break;
             case 'Admin':
                 if(adminCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[3] !== dept);
+                    const filteredReports = reports.filter(report => report[1] !== dept);
                     setReports(filteredReports);
                     setAdminCheckboxOn(false)
                 } else {
-                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    const filteredReports = defaultReports.filter(report => report[1] === dept);
                     setReports(reports.concat(filteredReports));
                     setAdminCheckboxOn(true)
                 }
             break;
             case 'Finance':
                 if(financeCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[3] !== dept);
+                    const filteredReports = reports.filter(report => report[1] !== dept);
                     setReports(filteredReports);
                     setFinanceCheckboxOn(false)
                 } else {
-                    const filteredReports = defaultReports.filter(report => report[3] === dept);
+                    const filteredReports = defaultReports.filter(report => report[1] === dept);
                     setReports(reports.concat(filteredReports));
                     setFinanceCheckboxOn(true)
                 }
@@ -114,14 +113,14 @@ const incidents = () => {
     const handleSortDirection = (columnName) => {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
         switch(columnName) {
-            case 'Subject':
+            case 'Description':
                 if(sortDirection === 'asc'){
                     reports.sort()
                 } else {
                     reports.reverse()
                 }
             break;
-            case 'DetailsOfIncident':
+            case 'Department':
                 if(sortDirection === 'asc'){
                     reports.map(report => {
                         report.unshift(report[1])
@@ -140,7 +139,7 @@ const incidents = () => {
                     })
                 }
             break;
-            case 'CreatedBy':
+            case 'Priority':
                 if(sortDirection === 'asc'){
                     reports.map(report => {
                         report.unshift(report[2])
@@ -159,7 +158,7 @@ const incidents = () => {
                     })
                 }
             break;
-            case 'RelatedDepartment':
+            case 'Initiator':
                 if(sortDirection === 'asc'){
                     reports.map(report => {
                         report.unshift(report[3])
@@ -171,6 +170,44 @@ const incidents = () => {
                 } else {
                     reports.map(report => {
                         report.unshift(report[3])
+                    })
+                    reports.reverse()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                }
+            break;
+            case 'Status':
+                if(sortDirection === 'asc'){
+                    reports.map(report => {
+                        report.unshift(report[4])
+                    })
+                    reports.sort()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                } else {
+                    reports.map(report => {
+                        report.unshift(report[4])
+                    })
+                    reports.reverse()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                }
+            break;
+            case 'Created':
+                if(sortDirection === 'asc'){
+                    reports.map(report => {
+                        report.unshift(report[5])
+                    })
+                    reports.sort()
+                    reports.map(report => {
+                        report.shift()
+                    })
+                } else {
+                    reports.map(report => {
+                        report.unshift(report[5])
                     })
                     reports.reverse()
                     reports.map(report => {
@@ -228,11 +265,13 @@ const incidents = () => {
                     <Table className={classes.styles} aria-label="incident-table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Subject<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Subject")}/></TableCell>
-                                <TableCell align="right">Details of Incident<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("DetailsOfIncident")}/></TableCell>
-                                <TableCell align="right">Created By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("CreatedBy")}/></TableCell>
-                                <TableCell align="right">Related Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("RelatedDepartment")}/></TableCell>
-                                <TableCell align="center">Edit/Delete</TableCell>
+                                <TableCell>Description<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Description")}/></TableCell>
+                                <TableCell align="right">Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Department")}/></TableCell>
+                                <TableCell align="right">Priority<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Priority")}/></TableCell>
+                                <TableCell align="right">Initiator<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Initiator")}/></TableCell>
+                                <TableCell align="right">Status<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Status")}/></TableCell>
+                                <TableCell align="right">Created<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Created")}/></TableCell>
+                                <TableCell align="center">Edit</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -242,9 +281,10 @@ const incidents = () => {
                                     <TableCell align="center">{report[1]}</TableCell>
                                     <TableCell align="center">{report[2]}</TableCell>
                                     <TableCell align="center">{report[3]}</TableCell>
+                                    <TableCell align="center">{report[4]}</TableCell>
+                                    <TableCell align="center">{report[5]}</TableCell>
                                     <TableCell align="center">
                                         <Button><EditIcon style={{color: 'blue'}}/></Button>
-                                        <Button><CancelIcon style={{color: 'red'}}/></Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
