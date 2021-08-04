@@ -28,28 +28,28 @@ const incidents = () => {
     const [sortDirection, setSortDirection] = useState('asc');
     const [reports, setReports] = useState([]);
     const defaultReports = [
-        ['login credentials', 'not able to log in', 'Susan', 'HR', 'edit'],
-        ['email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'],
-        ['phone', 'unable to recieve calls', 'Courtney', 'Admin', 'edit'],
-        ['headset', 'no sound from one ear', 'Richard', 'Admin', 'edit'],
-        ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'],
-        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'],
-        ['internet', 'no internet connection', 'Ashley', 'Engineering', 'edit']
+        ['login credentials', 'not able to log in', 'Susan', 'HR'],
+        ['email access', 'missing emails from inbox', 'Tim', 'Admin'],
+        ['phone', 'unable to recieve calls', 'Courtney', 'Admin'],
+        ['headset', 'no sound from one ear', 'Richard', 'Admin'],
+        ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'],
+        ['monitor', 'screen not displaying image', 'Ellen', 'Engineering'],
+        ['internet', 'no internet connection', 'Ashley', 'Engineering']
     ];
     
     useEffect(() => {
-        const createData = (subject, description, username, department, edit) => {
-            return [subject, description, username, department, edit];
+        const createData = (subject, description, username, department) => {
+            return [subject, description, username, department];
         }
     
         setReports([
-            createData('login credentials', 'not able to log in', 'Susan', 'HR', 'edit'),
-            createData('email access', 'missing emails from inbox', 'Tim', 'Admin', 'edit'),
-            createData('phone', 'unable to recieve calls', 'Courtney', 'Admin', 'edit'),
-            createData('headset', 'no sound from one ear', 'Richard', 'Admin', 'edit'),
-            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance', 'edit'),
-            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering', 'edit'),
-            createData('internet', 'no internet connection', 'Ashley', 'Engineering', 'edit')
+            createData('login credentials', 'not able to log in', 'Susan', 'HR'),
+            createData('email access', 'missing emails from inbox', 'Tim', 'Admin'),
+            createData('phone', 'unable to recieve calls', 'Courtney', 'Admin'),
+            createData('headset', 'no sound from one ear', 'Richard', 'Admin'),
+            createData('paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'),
+            createData('monitor', 'screen not displaying image', 'Ellen', 'Engineering'),
+            createData('internet', 'no internet connection', 'Ashley', 'Engineering')
         ])
     },[])
 
