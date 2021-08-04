@@ -18,17 +18,17 @@ const login = () => {
 
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
-            <form className='form-container' style={{textAlign: "center"}} onSubmit={(e) =>  handleSubmit(e)}>
+            <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={(e) =>  handleSubmit(e)}>
                 <h1>Login to Account</h1>
                 <div>
                     <FormControl required>
-                        <InputLabel id="username-label" style={{background: "white"}}>Username</InputLabel>
+                        <InputLabel id="username-label">Username</InputLabel>
                         <Input id="username" aria-describedby="my-helper-text" placeholder="username" value={username} onInput={(e) => setUsername(e.target.value)}/>
                     </FormControl>
                 </div>
                 <div>
                     <FormControl required>
-                        <InputLabel id="password-label" style={{background: "white"}}>Password</InputLabel>
+                        <InputLabel id="password-label">Password</InputLabel>
                         <Input id="password" aria-describedby="my-helper-text" placeholder="password" value={password} onInput={(e) => setPassword(e.target.value)}/>
                 </FormControl>
                 </div>
