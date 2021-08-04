@@ -34,6 +34,7 @@ const incidents = () => {
         ['headset', 'no sound from one ear', 'Richard', 'Admin'],
         ['paystubs', 'missing paystubs from 2019', 'Benedict', 'Finance'],
         ['monitor', 'screen not displaying image', 'Ellen', 'Engineering'],
+        ['internet', 'no internet connection', 'Ashley', 'Engineering'],
         ['internet', 'no internet connection', 'Ashley', 'Engineering']
     ];
     
