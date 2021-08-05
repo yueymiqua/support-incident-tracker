@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Menubar from '../components/menubar';
 import { makeStyles } from '@material-ui/core/styles';
 import { 
     Table, 
@@ -12,8 +13,8 @@ import {
 } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
-import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core'
+import Checkbox from '@material-ui/core/Checkbox';
+import { FormControlLabel, FormControl, FormLabel, FormGroup } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -228,7 +229,8 @@ const incidents = () => {
     const classes = useStyles();
 
     return (
-        <div style={{display: "flex", height: "100%", minHeight: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "5vh" }}>
+        <div style={{display: "flex", height: "100%", minHeight: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
+            <Menubar />
             <div style={{ textAlign: 'center' }}>
                 <h1>List of Existing Incidents</h1>
                 <FormControl component="fieldset" style={{borderBlockColor: 'black', borderBlockStyle: 'solid', borderBlockWidth: '1px', marginBottom: '10px'}}>

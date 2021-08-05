@@ -1,6 +1,8 @@
-import { useState } from 'react'
-import { Input, InputLabel, FormHelperText, FormControl, Select, MenuItem, Button } from '@material-ui/core'
-import Link from 'next/link'
+import { useState } from 'react';
+import { Input, InputLabel, FormHelperText, FormControl, Select, MenuItem, Button } from '@material-ui/core';
+import Link from 'next/link';
+import Menubar from '../components/menubar';
+
 
 const newUser = () => {
     const departments = ["HR", "Admin", "Finance", "Engineering"]
@@ -19,7 +21,8 @@ const newUser = () => {
 
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
-            <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={(e) =>  handleSubmit(e)}>
+            <Menubar />
+            <form className='form-container' style={{ textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove' }} onSubmit={(e) =>  handleSubmit(e)}>
                 <h1>Create New User</h1>
                 <div>
                     <FormControl required>
