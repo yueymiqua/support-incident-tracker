@@ -23,7 +23,7 @@ const newIncident = () => {
         setDescription('');
         setDepartment('');
         setPriority('');
-        setTimeout(() => alert('Thanks for submitting your incident - IT department will review it shortly. Now redirecting to all incidents report page...'))
+        alert('Your incident has been created. Redirecting to incidents page.')
         window.location.replace('/incidents');
     }
     if(user){
