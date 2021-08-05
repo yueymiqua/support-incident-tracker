@@ -19,7 +19,7 @@ const login = () => {
 
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
-            <Menubar />
+            <Menubar/>
             <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={(e) =>  handleSubmit(e)}>
                 <h1>Login to Account</h1>
                 <div>

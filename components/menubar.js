@@ -83,6 +83,9 @@ const Menubar = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
                 >
+                  <StyledMenuItem>
+                    <Link href="/"><ListItemText primary="Home" onClick={handleClose}/></Link>
+                </StyledMenuItem>
                 <StyledMenuItem>
                     <Link href="/new-incident"><ListItemText primary="Create New Incident" onClick={handleClose}/></Link>
                 </StyledMenuItem>
