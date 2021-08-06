@@ -1,24 +1,26 @@
 {
   "name": "support-incident-tracker",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yueymiqua/support-incident-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yueymiqua/support-incident-tracker/issues"
+  },
+  "homepage": "https://github.com/yueymiqua/support-incident-tracker#readme",
   "dependencies": {
-    "@apollo/client": "^3.4.5",
-    "@material-ui/core": "^4.12.2",
-    "@material-ui/icons": "^4.11.2",
+    "apollo-server": "^3.1.2",
     "graphql": "^15.5.1",
-    "next": "11.0.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "eslint": "7.31.0",
-    "eslint-config-next": "11.0.1"
+    "knex": "^0.95.9",
+    "pg": "^8.7.1"
   }
 }
