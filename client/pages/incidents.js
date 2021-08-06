@@ -32,8 +32,10 @@ const Incidents = () => {
             case 'Description':
                 if(sortDirection === 'asc'){
                     setReports(data.incidents.slice().sort((a, b) => {return (a.description > b.description) ? 1 : -1}))
+                    console.log(reports)
                 } else {
                     setReports(data.incidents.slice().sort((a, b) => {return (a.description < b.description) ? 1 : -1}))
+                    console.log(reports)
                 }
             break;
             case 'Department':
@@ -71,6 +73,20 @@ const Incidents = () => {
                     setReports(data.incidents.slice().sort((a, b) => {return (a.creation_date < b.creation_date) ? 1 : -1}))
                 }
             break;
+            case 'Updated':
+                if(sortDirection === 'asc'){
+                    setReports(data.incidents.slice().sort((a, b) => {return (a.updated_date > b.updated_date) ? 1 : -1}))
+                } else {
+                    setReports(data.incidents.slice().sort((a, b) => {return (a.updated_date < b.updated_date) ? 1 : -1}))
+                }
+            break;
+            case 'Resolver':
+                if(sortDirection === 'asc'){
+                    setReports(data.incidents.slice().sort((a, b) => {return (a.resolver > b.resolver) ? 1 : -1}))
+                } else {
+                    setReports(data.incidents.slice().sort((a, b) => {return (a.resolver < b.resolver) ? 1 : -1}))
+                }
+            break;
         }
     }
       
@@ -100,7 +116,7 @@ const Incidents = () => {
     const classes = useStyles();
 
     const body = (
-        <div style={modalStyle} >
+        <div style={modalStyle} className={classes.table}>
             <h2 id="simple-modal-title">Description of Incident</h2>
             <FormControl>
                 <InputLabel>Select Status</InputLabel>
@@ -153,13 +169,15 @@ const Incidents = () => {
                     handleSortDirection={handleSortDirection} 
                     sortDirection={sortDirection} 
                     reports={reports} 
-                    setReports={setReports}/>
+                    setReports={setReports}
+                    classes={classes}
+                />
                 <Modal
                     open={open}
                     onClose={() => handleClose()}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
-                    >
+                >
                     {body}
                 </Modal>
                 <div style={{ marginTop: '20px', marginBottom: '100px'}}>

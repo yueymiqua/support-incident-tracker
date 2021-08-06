@@ -17,7 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { FormLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button'
 
-const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports, setReports }) => {
+const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports, setReports, classes }) => {
 
     const { loading, error, data } = useQuery(GET_INCIDENTS);
     const [searchText, setSearchText] = useState('');
@@ -37,33 +37,33 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
         switch(dept) {
             case 'HR':
                 if(hrCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[1] !== dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] !== dept);
                     setReports(filteredReports);
                     setHrCheckboxOn(false)
                 } else {
-                    const filteredReports = data.incidents.filter(report => report[1] === dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] === dept);
                     setReports(reports.concat(filteredReports));
                     setHrCheckboxOn(true)
                 }
             break;
             case 'Admin':
                 if(adminCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[1] !== dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] !== dept);
                     setReports(filteredReports);
                     setAdminCheckboxOn(false)
                 } else {
-                    const filteredReports = data.incidents.filter(report => report[1] === dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] === dept);
                     setReports(reports.concat(filteredReports));
                     setAdminCheckboxOn(true)
                 }
             break;
             case 'Finance':
                 if(financeCheckboxOn === true){
-                    const filteredReports = reports.filter(report => report[1] !== dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] !== dept);
                     setReports(filteredReports);
                     setFinanceCheckboxOn(false)
                 } else {
-                    const filteredReports = data.incidents.filter(report => report[1] === dept);
+                    const filteredReports = data.incidents.filter(report => Object.values(report)[2] === dept);
                     setReports(reports.concat(filteredReports));
                     setFinanceCheckboxOn(true)
                 }
@@ -112,15 +112,18 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
             />
             <TableContainer component={Paper}>
                 <FormLabel style={{ color: '#002984' }}>Columns can be sorted alphabetically</FormLabel>
-                <Table  aria-label="incident-table">
+                <Table  aria-label="incident-table" className={classes.styles}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Description<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Description", data)}/></TableCell>
                             <TableCell align="right">Department<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Department", data)}/></TableCell>
                             <TableCell align="right">Priority<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Priority", data)}/></TableCell>
-                            <TableCell align="right">Initiator<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Initiator", data)}/></TableCell>
+                            <TableCell align="right">Submitted By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Initiator", data)}/></TableCell>
                             <TableCell align="right">Status<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Status", data)}/></TableCell>
                             <TableCell align="right">Created<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Created", data)}/></TableCell>
+                            <TableCell align="right">Last Updated<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Updated", data)}/></TableCell>
+                            <TableCell align="right">Assigned To<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Resolver", data)}/></TableCell>
+                            <TableCell align="right">Comments</TableCell>
                             <TableCell align="center">Edit</TableCell>
                         </TableRow>
                     </TableHead>
@@ -134,6 +137,9 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
                             <TableCell align="center">{report.initiator}</TableCell>
                             <TableCell align="center">{report.status}</TableCell>
                             <TableCell align="center">{report.creation_date}</TableCell>
+                            <TableCell align="center">{report.updated_date}</TableCell>
+                            <TableCell align="center">{report.resolver}</TableCell>
+                            <TableCell align="center">{report.resolver_comments}</TableCell>
                             <TableCell align="center">
                                 <Button onClick={() => handleOpen()}><EditIcon style={{color: 'blue'}}/></Button>
                             </TableCell>
@@ -149,6 +155,9 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
                             <TableCell align="center">{incident.initiator}</TableCell>
                             <TableCell align="center">{incident.status}</TableCell>
                             <TableCell align="center">{incident.creation_date}</TableCell>
+                            <TableCell align="center">{incident.updated_date}</TableCell>
+                            <TableCell align="center">{incident.resolver}</TableCell>
+                            <TableCell align="center">{incident.resolver_comments}</TableCell>
                             <TableCell align="center">
                                 <Button onClick={() => handleOpen()}><EditIcon style={{color: 'blue'}}/></Button>
                             </TableCell>
