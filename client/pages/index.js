@@ -2,7 +2,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import Menubar from '../components/menubar';
-import { createTheme } from '@material-ui/core/styles';
 
 export default function Home() {
 

@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { GET_INCIDENTS } from '../graphql/queries';
+import { GET_ALL_INCIDENTS } from '../graphql/queries';
 import { useState } from 'react';
 import SearchBar from './searchBar';
 import FilterCheckboxes from './filterCheckboxes';
@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button'
 
 const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports, setReports, classes }) => {
 
-    const { loading, error, data } = useQuery(GET_INCIDENTS);
+    const { loading, error, data } = useQuery(GET_ALL_INCIDENTS);
     const [searchText, setSearchText] = useState('');
     const [hrCheckboxOn, setHrCheckboxOn] = useState(true);
     const [adminCheckboxOn, setAdminCheckboxOn] = useState(true);
@@ -121,9 +121,9 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
                             <TableCell align="right">Submitted By<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Initiator", data)}/></TableCell>
                             <TableCell align="right">Status<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Status", data)}/></TableCell>
                             <TableCell align="right">Created<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Created", data)}/></TableCell>
-                            <TableCell align="right">Last Updated<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Updated", data)}/></TableCell>
+                            <TableCell align="center">Last Updated<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Updated", data)}/></TableCell>
                             <TableCell align="right">Assigned To<TableSortLabel direction={sortDirection} onClick={() => handleSortDirection("Resolver", data)}/></TableCell>
-                            <TableCell align="right">Comments</TableCell>
+                            <TableCell align="center">Comments</TableCell>
                             <TableCell align="center">Edit</TableCell>
                         </TableRow>
                     </TableHead>
