@@ -12,7 +12,7 @@ const knex = require("knex")({
 
 const typeDefs = gql`
     type Incident {
-        id: Int!
+        id: ID!
         description: String!
         department: String!
         priority: String!
@@ -25,7 +25,7 @@ const typeDefs = gql`
     }
 
     type User {
-        id: Int!
+        id: ID!
         username: String!
         password: String!
         department: String!
@@ -33,56 +33,69 @@ const typeDefs = gql`
     
     type Query {
         incidents: [Incident]
-        getAllUsers: [User]
-        getUserById(id: String!): User
+        users: [User]
+        getUserById(id: ID!): User
+    }
+
+    input NewIncidentInput {
+        id: ID!
+        description: String!
+        department: String!
+        priority: String!
+        initiator: String!
+        status: String!
+        creation_date: String!
+        updated_date: String
+        resolver: String
+        resolver_comments: String
+    }
+
+    input UpdateIncidentInput {
+        id: ID!
+        updated_date: String 
+        resolver: String, 
+        resolver_comments: String
+    }
+
+    input NewUserInput {
+        id: ID!
+        username: String!
+        password: String!
+        department: String!
     }
 
     type Mutation {
-        addIncident(
-            id: String!
-            description: String!
-            department: String!
-            priority: String!
-            initiator: String!
-            status: String!
-            creation_date: String!
-            updated_date: String
-            resolver: String
-            resolver_comments: String
-        ): Incident!
-        updateIncident(
-            id: String!
-            description: String!
-            department: String!
-            priority: String!
-            initiator: String!
-            status: String!
-            creation_date: String!
-            updated_date: String
-            resolver: String
-            resolver_comments: String
-        ): Incident!
-        addUser(
-            userId: String!
-            userName: String!
-            password: String!
-            department: String!
-        ): User!
+        addIncident(input: NewIncidentInput!): Incident!
+        updateIncident(input: UpdateIncidentInput!): Incident!
+        addUser(input: NewUserInput!): User!
     }
 `;
 
 const resolvers = {
     Query: {
         incidents: () => knex('incidents').select('*'),
-        getAllUsers: () => knex('users').select('*'),
-        getUserById: (id) => knex('users').select('*').where( 'id', id )
+        users: () => knex('users').select('*'),
+        getUserById: (_, {id}) => knex('users').where( 'id', id ).first()
+    },
+    Mutation: {
+        addIncident: (_, {input}) => {
+            const incident = knex("incidents").insert(input)
+            return incident
+        },
+        updateIncident: (_, {input}) => {
+            knex("incidents")
+            .where({ id: input.id })
+            .update({
+                updated_date: input.updated_date, 
+                resolver: input.resolver, 
+                resolver_comments: input.resolver_comments})
+        },
+        addUser: (_, {input}) => {
+            const user = knex("users").insert(input)
+            return user
+        }
     }
-    // Mutation: {
-    //     addIncident
-    //     updateIncident
-    //     addUser
-    // }
-};
+}
 
 const server = new ApolloServer({ typeDefs, resolvers });
 

@@ -19,7 +19,7 @@ export const GET_ALL_INCIDENTS = gql`
 
 export const GET_ALL_USERS = gql`
     {
-        getAllUsers {
+        users {
             id
             username
             password
@@ -29,7 +29,7 @@ export const GET_ALL_USERS = gql`
 `;
 
 export const GET_USER_BY_ID = gql`
-    query getUserById ($id: String!) {
+    {
         getUserById (id: $id) {
             id
             username

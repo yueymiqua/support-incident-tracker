@@ -16,6 +16,7 @@ export const ADD_INCIDENT = gql`
 export const UPDATE_INCIDENT = gql`
     mutation updateIncident ($id: String!) {
         updateIncident (id: $id) {
+            id
             updated_date
             resolver
             resolver_comments
