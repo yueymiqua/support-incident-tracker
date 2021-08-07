@@ -1,3 +1,7 @@
+// type input for UpdateIncidentInput
+// import typeDefs and resolvers js files to here
+// graphql studio to return successful mutations
+
 const { ApolloServer, gql } = require('apollo-server');
 
 const knex = require("knex")({
@@ -50,13 +54,6 @@ const typeDefs = gql`
         resolver_comments: String
     }
 
-    input UpdateIncidentInput {
-        id: ID!
-        updated_date: String 
-        resolver: String, 
-        resolver_comments: String
-    }
-
     input NewUserInput {
         id: ID!
         username: String!
@@ -66,7 +63,7 @@ const typeDefs = gql`
 
     type Mutation {
         addIncident(input: NewIncidentInput!): Incident!
-        updateIncident(input: UpdateIncidentInput!): Incident!
+        updateIncident(id: ID!, updated_date: String, resolver: String, resolver_comments: String): Incident!
         addUser(input: NewUserInput!): User!
     }
 `;
@@ -82,14 +79,14 @@ const resolvers = {
             const incident = knex("incidents").insert(input)
             return incident
         },
-        updateIncident: (_, {input}) => {
+        updateIncident: (_, { id, updated_date, resolver, resolver_comments }) => 
             knex("incidents")
-            .where({ id: input.id })
+            .where({ id: id })
             .update({
-                updated_date: input.updated_date, 
-                resolver: input.resolver, 
-                resolver_comments: input.resolver_comments})
-        },
+                updated_date: updated_date, 
+                resolver: resolver, 
+                resolver_comments: resolver_comments 
+            }),
         addUser: (_, {input}) => {
             const user = knex("users").insert(input)
             return user
