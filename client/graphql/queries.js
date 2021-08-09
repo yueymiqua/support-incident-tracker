@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 export const GET_ALL_INCIDENTS = gql`
     {
         incidents {
-            id
+            incidentId
             description
             department
             priority
@@ -20,7 +20,7 @@ export const GET_ALL_INCIDENTS = gql`
 export const GET_ALL_USERS = gql`
     {
         users {
-            id
+            userId
             username
             password
             department
@@ -28,10 +28,10 @@ export const GET_ALL_USERS = gql`
     }
 `;
 
-export const GET_USER_BY_ID = gql`
-    {
-        getUserById (id: $id) {
-            id
+export const GET_USER_BY_USERNAME = gql`
+    query getUserByUsername($username: String!, $password: String!) {
+        getUserByUsername (username: $username, password: $password) {
+            userId
             username
             password
             department

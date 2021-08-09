@@ -1,10 +1,7 @@
-// type input for UpdateIncidentInput
-// import typeDefs and resolvers js files to here
-// graphql studio to return successful mutations
+import { ApolloServer, gql } from 'apollo-server';
+import Knex from 'knex';
 
-const { ApolloServer, gql } = require('apollo-server');
-
-const knex = require("knex")({
+const knex = Knex({
     client: "pg",
     connection: {
       host: "localhost",
@@ -16,7 +13,7 @@ const knex = require("knex")({
 
 const typeDefs = gql`
     type Incident {
-        id: ID!
+        incidentId: ID!
         description: String!
         department: String!
         priority: String!
@@ -29,7 +26,7 @@ const typeDefs = gql`
     }
 
     type User {
-        id: ID!
+        userId: ID!
         username: String!
         password: String!
         department: String!
@@ -38,33 +35,33 @@ const typeDefs = gql`
     type Query {
         incidents: [Incident]
         users: [User]
-        getUserById(id: ID!): User
+        getUserByUsername(username: String!, password: String!): User
     }
 
-    input NewIncidentInput {
-        id: ID!
-        description: String!
-        department: String!
-        priority: String!
-        initiator: String!
-        status: String!
-        creation_date: String!
-        updated_date: String
-        resolver: String
-        resolver_comments: String
-    }
+    # input NewIncidentInput {
+    #     incidentId: ID!
+    #     description: String!
+    #     department: String!
+    #     priority: String!
+    #     initiator: String!
+    #     status: String!
+    #     creation_date: String!
+    #     updated_date: String
+    #     resolver: String
+    #     resolver_comments: String
+    # }
 
-    input NewUserInput {
-        id: ID!
-        username: String!
-        password: String!
-        department: String!
-    }
+    # input NewUserInput {
+    #     userId: ID!
+    #     username: String!
+    #     password: String!
+    #     department: String!
+    # }
 
     type Mutation {
-        addIncident(input: NewIncidentInput!): Incident!
-        updateIncident(id: ID!, updated_date: String, resolver: String, resolver_comments: String): Incident!
-        addUser(input: NewUserInput!): User!
+        addIncident(incidentId: ID!, description: String!, department: String!, priority: String!, initiator: String!, status: String!, creation_date: String!): Incident!
+        updateIncident(incidentId: ID!, status: String, updated_date: String, resolver: String, resolver_comments: String): Incident!
+        addUser(userId: ID!, username: String!, password: String!, department: String!): User!
     }
 `;
 
@@ -72,23 +69,40 @@ const resolvers = {
     Query: {
         incidents: () => knex('incidents').select('*'),
         users: () => knex('users').select('*'),
-        getUserById: (_, {id}) => knex('users').where( 'id', id ).first()
+        getUserByUsername: (_, { username }) => knex('users').where( 'username', username ).first()
     },
     Mutation: {
-        addIncident: (_, {input}) => {
-            const incident = knex("incidents").insert(input)
+        addIncident: async (_, { incidentId, description, department, priority, initiator, status, creation_date}) => {
+            const [incident] = await knex("incidents" ).returning('*').insert({
+                incidentId: incidentId,
+                description: description,
+                department: department, 
+                priority: priority,
+                initiator: initiator,
+                status: status,
+                creation_date: creation_date
+            })
             return incident
         },
-        updateIncident: (_, { id, updated_date, resolver, resolver_comments }) => 
-            knex("incidents")
-            .where({ id: id })
+        updateIncident: async (_, { incidentId, status, updated_date, resolver, resolver_comments }) => {
+            const [returnedIncident] = await knex("incidents")
+            .where({ incidentId: incidentId })
+            .returning('*')
             .update({
+                status: status,
                 updated_date: updated_date, 
                 resolver: resolver, 
                 resolver_comments: resolver_comments 
-            }),
-        addUser: (_, {input}) => {
-            const user = knex("users").insert(input)
+            })
+            return returnedIncident
+        },
+        addUser: async (_, { userId, username, password, department }) => {
+            const [user] = await knex("users").returning('*').insert({
+                userId: userId,
+                username: username,
+                password: password,
+                department: department
+            })
             return user
         }
     }

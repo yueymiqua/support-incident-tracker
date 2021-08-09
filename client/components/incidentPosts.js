@@ -25,14 +25,6 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
     const [adminCheckboxOn, setAdminCheckboxOn] = useState(true);
     const [financeCheckboxOn, setFinanceCheckboxOn] = useState(true);
 
-    if(loading){
-        return "loading"
-    }
-
-    if(error){
-        return "error"
-    }
-
     const filterByDepartment = (dept) => {
         switch(dept) {
             case 'HR':
@@ -74,7 +66,6 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
     const handleTextSearch = (e) => {
         setSearchText(e.target.value)
         setReports(data.incidents);
-        console.log(e.target.value)
         const reportConsistingOfSearchText = []
         const filterBySearchText = reports.map((report) => {
                 if(Object.values(report).join(" ").includes(searchText)){
@@ -94,6 +85,14 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
     const handleClearSearch = () => {
         setReports(data.incidents)
         setSearchText('')
+    }
+
+    if(loading){
+        return "loading"
+    }
+
+    if(error){
+        return "error"
     }
 
     return (
@@ -141,7 +140,7 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
                             <TableCell align="center">{report.resolver}</TableCell>
                             <TableCell align="center">{report.resolver_comments}</TableCell>
                             <TableCell align="center">
-                                <Button onClick={() => handleOpen()}><EditIcon style={{color: 'blue'}}/></Button>
+                                <Button onClick={() => handleOpen(report.incidentId, report.status, report.resolver, report.resolver_comments)}><EditIcon style={{color: 'blue'}}/></Button>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -159,7 +158,7 @@ const IncidentPosts = ({ handleOpen, handleSortDirection, sortDirection, reports
                             <TableCell align="center">{incident.resolver}</TableCell>
                             <TableCell align="center">{incident.resolver_comments}</TableCell>
                             <TableCell align="center">
-                                <Button onClick={() => handleOpen()}><EditIcon style={{color: 'blue'}}/></Button>
+                                <Button onClick={() => handleOpen(incident.incidentId, incident.status, incident.resolver, incident.resolver_comments)}><EditIcon style={{color: 'blue'}}/></Button>
                             </TableCell>
                         </TableRow>
                     ))}

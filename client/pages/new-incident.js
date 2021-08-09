@@ -1,37 +1,59 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useMutation } from '@apollo/client';
+import { ADD_INCIDENT } from '../graphql/mutations';
 import { InputLabel, TextareaAutosize, FormControl, Select, MenuItem, Button } from '@material-ui/core'
 import Link from 'next/link'
 import Menubar from '../components/menubar';
 
 const newIncident = () => {
-    const user = 'user1';
-    const departments = ["HR", "Admin", "Finance", "Engineering"];
+    const initiator = 'user1';
+    const departments = ["HR", "Admin", "Finance"];
     const priorities = ['LOW', 'MEDIUM', 'HIGH'];
+    const status = 'OPEN';
+    const creation_date = '2021-08-08';
     const [description, setDescription] = useState('');
     const [department, setDepartment] = useState('');
     const [priority, setPriority] = useState('');
-    const [status, setStatus] = useState('OPEN');
-    const [createdDate, setCreatedDate] = useState('');
+    const [addIncident, addedIncident] = useMutation(ADD_INCIDENT);
+    const incidentId = () => {
+        const randomInteger = Math.floor(Math.random() * (999999999 - 10) + 10)
+        return randomInteger
+    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(
-            'Description: ', description, 
-            'Department: ', department, 
-            'Priority: ', priority, 
-            'Status: ', status, 
-            'Created: ', createdDate)
-        setDescription('');
-        setDepartment('');
-        setPriority('');
+    const onSubmit = () => {
+        addIncident({
+            variables: { 
+                incidentId: incidentId(),
+                description: description,
+                department: department,
+                priority: priority,
+                initiator: initiator,
+                status: status,
+                creation_date: creation_date
+             }
+        })
         alert('Your incident has been created. Redirecting to incidents page.')
         window.location.replace('/incidents');
     }
-    if(user){
+
+    const submit = (e) => {
+        e.preventDefault()
+        onSubmit({ incidentId, description, department, priority, initiator, status, creation_date })
+    }
+
+    if(addedIncident.loading){
+        return "loading"
+    }
+
+    if(addedIncident.error){
+        return "error"
+    }
+
+    if(initiator){
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
             <Menubar />
-            <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={(e) =>  handleSubmit(e)}>
+            <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={submit}>
                 <h1>Create Incident Report</h1>
                 <div>
                     <FormControl required>

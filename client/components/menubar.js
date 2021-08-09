@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }))(MenuItem);
 
-const Menubar = () => {
+const Menubar = ({ userAuthenticated, setUserAuthenticated, currentUsername }) => {
 
     const classes = useStyles();
 
@@ -73,38 +73,35 @@ const Menubar = () => {
         <div>
             <AppBar position="fixed">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClick}>
-                    <MenuIcon />
-                    </IconButton>
-                    <StyledMenu
-                id="customized-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                >
-                  <StyledMenuItem>
-                    <Link href="/"><ListItemText primary="Home" onClick={handleClose}/></Link>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <Link href="/new-incident"><ListItemText primary="Create New Incident" onClick={handleClose}/></Link>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <Link href="/incidents"><ListItemText primary="List of Incidents" onClick={handleClose}/></Link>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <Link href="/new-user"><ListItemText primary="Create Account" onClick={handleClose}/></Link>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <Link href="/login"><ListItemText primary="Login" onClick={handleClose}/></Link>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                    <a href="https://github.com/radian-digital/radian-challenge" target="_blank" onClick={handleClose}>
-                        <ListItemText primary="About Project Scope" />
-                    </a>
-                </StyledMenuItem>
-                </StyledMenu>
-                    <Typography variant="h6" className={classes.title}>
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={handleClick}>
+                  <MenuIcon />
+                  </IconButton>
+                  <StyledMenu
+                    id="customized-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    >
+                    <StyledMenuItem>
+                      <Link href="/"><ListItemText primary="Home" onClick={handleClose}/></Link>
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <Link href="/new-incident"><ListItemText primary="Create New Incident" onClick={handleClose}/></Link>
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <Link href="/incidents"><ListItemText primary="List of Incidents" onClick={handleClose}/></Link>
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <Link href="/new-user"><ListItemText primary="Create Account" onClick={handleClose}/></Link>
+                    </StyledMenuItem>
+                    <StyledMenuItem>
+                        <a href="https://github.com/radian-digital/radian-challenge" target="_blank" onClick={handleClose}>
+                            <ListItemText primary="About Project Scope" />
+                        </a>
+                    </StyledMenuItem>
+                  </StyledMenu>
+                  <Typography variant="h6" className={classes.title}>
                     <a
                     href="https://github.com/radian-digital/radian-challenge"
                     target="_blank"
@@ -112,9 +109,17 @@ const Menubar = () => {
                     >
                     Radian Technology Challenge
                     </a>
-                    </Typography>
+                  </Typography>
+                  {userAuthenticated
+                  ? <div>
+                    <span>Hello {currentUsername}!</span>
+                    <Link href="/incidents"><Button color="inherit" style={{ marginLeft: "20px" }} onClick={() => setUserAuthenticated(false)}>Logout</Button></Link>
+                  </div>
+                  :<div>
                     <Link href="/new-user"><Button color="inherit"><PersonAddIcon/>Create Account</Button></Link>
-                    <Link href="/login"><Button color="inherit"><AccountCircleIcon/>Login</Button></Link>
+                    <Link href="/incidents"><Button color="inherit"><AccountCircleIcon/>Login</Button></Link>
+                  </div>
+                  }
                 </Toolbar>
             </AppBar>
         </div>

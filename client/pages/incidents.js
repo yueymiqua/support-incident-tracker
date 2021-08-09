@@ -1,28 +1,63 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useMutation } from '@apollo/client';
+import { UPDATE_INCIDENT } from '../graphql/mutations';
+import { GET_ALL_INCIDENTS } from '../graphql/queries';
 import Menubar from '../components/menubar';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import { FormControl, Select, MenuItem, TextareaAutosize, InputLabel } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import IncidentPosts from '../components/incidentPosts';
+import Login from '../components/login';
 
 const Incidents = () => {
-
+    const [userAuthenticated, setUserAuthenticated] = useState(false);
+    const [currentUsername, setCurrentUsername] = useState('');
     const [reports, setReports] = useState([]);
     const [modalStyle] = useState(getModalStyle);
     const [open, setOpen] = useState(false);
     const statuses = ['OPEN', 'IN-PROGRESS', 'DONE'];
-    const [status, setStatus] = useState('');
-    const priorities = ['LOW', 'MEDIUM', 'HIGH'];
-    const [priority, setPriority] = useState('');
+    const resolvers = ['Pierre', 'KP'];
+    const updated_date = "2021-05-16";
+    const [currentIncidentId, setCurrentIncidentId] = useState('');
+    const [currentResolverComments, setCurrentResolverComments] = useState('')
+    const [currentStatus, setCurrentStatus] = useState('');
+    const [currentResolver, setCurrentResolver] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
-    
+    const [updateIncident, updatedIncident] = useMutation(UPDATE_INCIDENT, { 
+        refetchQueries: [{ 
+            query: GET_ALL_INCIDENTS 
+        }] 
+    });
+
+    const onSubmit = input => {
+        updateIncident({
+            variables: { 
+                incidentId: currentIncidentId, 
+                status: currentStatus, 
+                updated_date: input.updated_date, 
+                resolver: currentResolver, 
+                resolver_comments: currentResolverComments
+            }
+        })
+        setOpen(false);
+    }
+
+    const submit = e => {
+        e.preventDefault()
+        onSubmit({currentStatus, updated_date, currentResolver, currentResolverComments})
+    }
+
     const handleClose = () => {
         setOpen(false);
     };
 
-    const handleOpen = () => {
+    const handleOpen = (incidentId, status, resolver, resolver_comments) => {
+        setCurrentIncidentId(incidentId)
+        setCurrentStatus(status)
+        setCurrentResolver(resolver)
+        setCurrentResolverComments(resolver_comments)
         setOpen(true);
     };
 
@@ -32,10 +67,8 @@ const Incidents = () => {
             case 'Description':
                 if(sortDirection === 'asc'){
                     setReports(data.incidents.slice().sort((a, b) => {return (a.description > b.description) ? 1 : -1}))
-                    console.log(reports)
                 } else {
                     setReports(data.incidents.slice().sort((a, b) => {return (a.description < b.description) ? 1 : -1}))
-                    console.log(reports)
                 }
             break;
             case 'Department':
@@ -116,53 +149,66 @@ const Incidents = () => {
     const classes = useStyles();
 
     const body = (
-        <div style={modalStyle} className={classes.table}>
+        <form onSubmit={submit} style={modalStyle} className={classes.paper}>
             <h2 id="simple-modal-title">Description of Incident</h2>
+            <FormControl>
+                <InputLabel style={{ minWidth: "200px" }}>Updated on: 2021-08-07</InputLabel>
+            </FormControl><br></br><br></br><br></br>
+            <FormControl>
+                <InputLabel>Assigned To</InputLabel>
+                <Select 
+                    style={{width: '160px'}}
+                    labelId="resolvers-label"
+                    id="resolvers"
+                    defaultValue={currentResolver}
+                    onChange={(e) => setCurrentResolver(e.target.value)}
+                >
+                    {resolvers.map((resolver, index) => 
+                        <MenuItem key={index} value={resolver}>{resolver}</MenuItem>
+                    )}
+                </Select>
+            </FormControl>
+            <br></br>
             <FormControl>
                 <InputLabel>Select Status</InputLabel>
                 <Select 
                     style={{width: '160px'}}
                     labelId="statuses-label"
                     id="statuses"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
+                    defaultValue={currentStatus}
+                    onChange={(e) => setCurrentStatus(e.target.value)}
                 >
-                    {statuses.map((stat, index) => 
-                        <MenuItem key={index} value={stat}>{stat}</MenuItem>
-                    )}
-                </Select>
-            </FormControl>
-            <br></br>
-            <FormControl>
-                <InputLabel>Select Priority</InputLabel>
-                <Select 
-                    style={{width: '160px'}}
-                    labelId="priorities-label"
-                    id="priorities"
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
-                >
-                    {priorities.map((prrty, index) => 
-                        <MenuItem key={index} value={prrty}>{prrty}</MenuItem>
+                    {statuses.map((status, index) => 
+                        <MenuItem key={index} value={status}>{status}</MenuItem>
                     )}
                 </Select>
             </FormControl>
             <br></br>
             <br></br>
             <FormControl>
-                <TextareaAutosize minRows={8} style={{ minWidth: '20vw' }} placeholder="Relevant notes"/>
+                <TextareaAutosize minRows={8} style={{ minWidth: '20vw' }} value={ currentResolverComments ? currentResolverComments : 'Enter comments here *'} onChange={(e) => setCurrentResolverComments(e.target.value)} />
             </FormControl>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px'}}>
-                <Button style={{ backgroundColor: '#3f50b5', color: '#fff', marginRight: '5px' }} onClick={() => setOpen(false)}>Save</Button>
+                <Button style={{ backgroundColor: '#3f50b5', color: '#fff', marginRight: '5px' }} type="submit">Save</Button>
                 <Button style={{ backgroundColor: 'crimson', color: '#fff' }} onClick={() => setOpen(false)}>Close</Button>
             </div>
-        </div>
+        </form>
       );
+
+    if(updatedIncident.loading){
+        return "loading";
+    }
+
+    if(updatedIncident.error){
+        return "error";
+    }
 
     return (
         <div style={{display: "flex", height: "100%", minHeight: "100vh", justifyContent: "center", background: "lightGray", paddingTop: "10vh" }}>
-            <Menubar />
-            <div style={{ textAlign: 'center' }}>
+            <Menubar userAuthenticated={userAuthenticated} setUserAuthenticated={setUserAuthenticated} currentUsername={currentUsername} />
+            { !userAuthenticated
+            ?<Login setUserAuthenticated={setUserAuthenticated} setCurrentUsername={setCurrentUsername} />
+            :<div style={{ textAlign: 'center' }}>
                 <h1>List of Existing Incidents</h1>
                 <IncidentPosts 
                     handleOpen={handleOpen} 
@@ -174,7 +220,7 @@ const Incidents = () => {
                 />
                 <Modal
                     open={open}
-                    onClose={() => handleClose()}
+                    onClose={handleClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
@@ -186,6 +232,7 @@ const Incidents = () => {
                     <Link href="/"><Button style={{ color: 'ivory', backgroundColor: '#002984' }}>Back</Button></Link>
                 </div>
             </div>
+            }
         </div>
     )
 }

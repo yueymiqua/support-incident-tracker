@@ -1,28 +1,51 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../graphql/mutations';
 import { Input, InputLabel, FormHelperText, FormControl, Select, MenuItem, Button } from '@material-ui/core';
 import Link from 'next/link';
 import Menubar from '../components/menubar';
 
 
 const newUser = () => {
-    const departments = ["HR", "Admin", "Finance", "Engineering"]
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [department, setDepartment] = useState('')
+    const departments = ["HR", "Admin", "Finance"];
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [department, setDepartment] = useState('');
+    const [addUser, addedUser] = useMutation(ADD_USER);
+    const userId = () => {
+        const randomInteger = Math.floor(Math.random() * (999999999 - 10) + 10)
+        return randomInteger
+    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Username: ', username, 'Password: ', password, 'Department: ', department)
-        setUsername('');
-        setPassword('');
-        setDepartment('');
-        window.location.replace('/login');
+    const onSubmit = () => {
+        addUser ({
+            variables: { 
+                userId: userId(),
+                username: username,
+                password: password,
+                department: department
+             }
+        })
+        window.location.replace('/incidents');
+    }
+
+    const submit = (e) => {
+        e.preventDefault()
+        onSubmit({ userId, username, password, department })
+    }
+
+    if(addedUser.loading) {
+        return 'loading'
+    }
+
+    if(addedUser.error) {
+        return 'error'
     }
 
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
             <Menubar />
-            <form className='form-container' style={{ textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove' }} onSubmit={(e) =>  handleSubmit(e)}>
+            <form className='form-container' style={{ textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove' }} onSubmit={submit}>
                 <h1>Create New User</h1>
                 <div>
                     <FormControl required>
@@ -33,7 +56,7 @@ const newUser = () => {
                 <div>
                     <FormControl required>
                         <InputLabel id="password-label">Password</InputLabel>
-                        <Input id="password" placeholder="password" value={password} onInput={(e) => setPassword(e.target.value)}/>
+                        <Input id="password" placeholder="password" type="password" value={password} onInput={(e) => setPassword(e.target.value)}/>
                     <FormHelperText id="my-helper-text">We won't share your password.</FormHelperText>
                 </FormControl>
                 </div>
