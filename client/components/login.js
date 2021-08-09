@@ -7,8 +7,8 @@ import { GET_USER_BY_USERNAME } from '../graphql/queries';
 const login = ({ setUserAuthenticated, setCurrentUsername }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [fetchedUsername, setFetchedUsername] = useState('');
-    const [fetchedPassword, setFetchedPassword] = useState('');
+    // const [fetchedUsername, setFetchedUsername] = useState('');
+    // const [fetchedPassword, setFetchedPassword] = useState('');
     const { data, refetch } = useQuery(GET_USER_BY_USERNAME, { 
         variables: { 
             username: username, password: password
@@ -19,16 +19,14 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        refetch(), 
-            () => {setFetchedUsername(data.getUserByUsername.username)},
-            () => {setFetchedPassword(data.getUserByUsername.password)}
-        if(fetchedUsername !== username || fetchedPassword !== password) {
-            alert('Incorrect username or password - please try again')
-            setUsername('')
-            setPassword('')
-        } else {
+        refetch();
+        if(data.getUserByUsername.username === username && data.getUserByUsername.password === password) {
             setUserAuthenticated(true)
             setCurrentUsername(username)
+        } else {
+            alert('Incorrect username or password - please try again')
+            setUsername('')
+            setPassword('') 
         }
     };
 

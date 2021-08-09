@@ -19,7 +19,7 @@ const Incidents = () => {
     const [open, setOpen] = useState(false);
     const statuses = ['OPEN', 'IN-PROGRESS', 'DONE'];
     const resolvers = ['Pierre', 'KP'];
-    const updated_date = "2021-05-16";
+    const [updatedDate, setUpdatedDate] = useState('');
     const [currentIncidentId, setCurrentIncidentId] = useState('');
     const [currentResolverComments, setCurrentResolverComments] = useState('')
     const [currentStatus, setCurrentStatus] = useState('');
@@ -31,12 +31,12 @@ const Incidents = () => {
         }] 
     });
 
-    const onSubmit = input => {
+    const onSubmit = () => {
         updateIncident({
             variables: { 
                 incidentId: currentIncidentId, 
                 status: currentStatus, 
-                updated_date: input.updated_date, 
+                updated_date: updatedDate, 
                 resolver: currentResolver, 
                 resolver_comments: currentResolverComments
             }
@@ -59,6 +59,7 @@ const Incidents = () => {
         setCurrentResolver(resolver)
         setCurrentResolverComments(resolver_comments)
         setOpen(true);
+        setUpdatedDate('YYYY-MM-DD')
     };
 
     const handleSortDirection = (columnName, data) => {
@@ -152,7 +153,7 @@ const Incidents = () => {
         <form onSubmit={submit} style={modalStyle} className={classes.paper}>
             <h2 id="simple-modal-title">Description of Incident</h2>
             <FormControl>
-                <InputLabel style={{ minWidth: "200px" }}>Updated on: 2021-08-07</InputLabel>
+                <InputLabel style={{ minWidth: "200px" }}>Updated on: {updatedDate}</InputLabel>
             </FormControl><br></br><br></br><br></br>
             <FormControl>
                 <InputLabel>Assigned To</InputLabel>
