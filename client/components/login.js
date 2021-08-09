@@ -7,8 +7,6 @@ import { GET_USER_BY_USERNAME } from '../graphql/queries';
 const login = ({ setUserAuthenticated, setCurrentUsername }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [fetchedUsername, setFetchedUsername] = useState('');
-    // const [fetchedPassword, setFetchedPassword] = useState('');
     const { data, refetch } = useQuery(GET_USER_BY_USERNAME, { 
         variables: { 
             username: username, password: password
