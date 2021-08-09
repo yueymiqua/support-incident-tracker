@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Input, InputLabel, FormControl, Button } from '@material-ui/core';
 import Link from 'next/link';
@@ -15,16 +15,25 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
         enabled: false,
     });
 
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
         refetch();
-        if(data.getUserByUsername.username === username && data.getUserByUsername.password === password) {
-            setUserAuthenticated(true)
-            setCurrentUsername(username)
+        if(!data.getUserByUsername){
+            return(
+                alert('Incorrect username or password - please try again'),
+                setUsername(''),
+                setPassword('')
+            )
         } else {
-            alert('Incorrect username or password - please try again')
-            setUsername('')
-            setPassword('') 
+            if(data.getUserByUsername.password === password) {
+                return(setUserAuthenticated(true), setCurrentUsername(username))
+            } else {
+                return(
+                    alert('Incorrect username or password - please try again'),
+                    setUsername(''),
+                    setPassword('')
+                )
+            }
         }
     };
 
