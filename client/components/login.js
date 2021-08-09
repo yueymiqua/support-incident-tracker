@@ -7,20 +7,8 @@ import { GET_USER_BY_USERNAME } from '../graphql/queries';
 const login = ({ setUserAuthenticated, setCurrentUsername }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
-    const onSubmit = async (e) => {
-        e.preventDefault()
-        refetch();
-        if(data.getUserByUsername.username === username && data.getUserByUsername.password === password) {
-            setUserAuthenticated(true)
-            setCurrentUsername(username)
-        } else {
-            alert('Incorrect username or password - please try again')
-            setUsername('')
-            setPassword('')
-        }
-    }
-
+    const [fetchedUsername, setFetchedUsername] = useState('');
+    const [fetchedPassword, setFetchedPassword] = useState('');
     const { data, refetch } = useQuery(GET_USER_BY_USERNAME, { 
         variables: { 
             username: username, password: password
@@ -28,7 +16,22 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
         refetchOnWindowFocus: false,
         enabled: false,
     });
- 
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        refetch(), 
+            () => {setFetchedUsername(data.getUserByUsername.username)},
+            () => {setFetchedPassword(data.getUserByUsername.password)}
+        if(fetchedUsername !== username || fetchedPassword !== password) {
+            alert('Incorrect username or password - please try again')
+            setUsername('')
+            setPassword('')
+        } else {
+            setUserAuthenticated(true)
+            setCurrentUsername(username)
+        }
+    };
+
     return (
         <div style={{ display: "flex", height: "100vh", justifyContent: "center", background: "lightGray", alignItems: "center"}}>
             <form className='form-container' style={{textAlign: "center", background: 'white', padding: '15px 20px', borderRadius: '10px', borderWidth: '2px', borderStyle: 'groove'}} onSubmit={onSubmit}>
@@ -50,6 +53,6 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
             </form>
         </div>
     )
-}
+};
 
 export default login
