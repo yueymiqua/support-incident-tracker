@@ -72,7 +72,7 @@ const Incidents = () => {
             {
                 mm='0'+mm;
             } 
-            return (mm+'-'+dd+'-'+yyyy).toString();
+            return (yyyy+'-'+mm+'-'+dd).toString();
         })
     };
 
@@ -201,7 +201,7 @@ const Incidents = () => {
             <br></br>
             <br></br>
             <FormControl>
-                <TextareaAutosize minRows={8} style={{ minWidth: '20vw' }} value={ currentResolverComments ? currentResolverComments : 'Enter comments here *'} onChange={(e) => setCurrentResolverComments(e.target.value)} />
+                <TextareaAutosize minRows={8} style={{ minWidth: '20vw' }} placeholder={ currentResolverComments ? currentResolverComments : 'Enter comments here *'} value={currentResolverComments} onChange={(e) => setCurrentResolverComments(e.target.value)} />
             </FormControl>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px'}}>
                 <Button style={{ backgroundColor: '#3f50b5', color: '#fff', marginRight: '5px' }} type="submit">Save</Button>

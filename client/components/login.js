@@ -3,10 +3,13 @@ import { useQuery } from '@apollo/client';
 import { Input, InputLabel, FormControl, Button } from '@material-ui/core';
 import Link from 'next/link';
 import { GET_USER_BY_USERNAME } from '../graphql/queries';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const login = ({ setUserAuthenticated, setCurrentUsername }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [open, setOpen] = useState(false);
     const { data, refetch } = useQuery(GET_USER_BY_USERNAME, { 
         variables: { 
             username: username, password: password
@@ -15,24 +18,25 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
         enabled: false,
     });
 
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+    
+    const handleClose = (event) => {
+        setOpen(false);
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         refetch();
         if(!data.getUserByUsername){
-            return(
-                alert('Incorrect username or password - please try again'),
-                setUsername(''),
-                setPassword('')
-            )
+            return setOpen(true)
         } else {
             if(data.getUserByUsername.password === password) {
                 return(setUserAuthenticated(true), setCurrentUsername(username))
             } else {
-                return(
-                    alert('Incorrect username or password - please try again'),
-                    setUsername(''),
-                    setPassword('')
-                )
+                
+                return setOpen(true)
             }
         }
     };
@@ -56,6 +60,11 @@ const login = ({ setUserAuthenticated, setCurrentUsername }) => {
                 <Button type="submit" style={{ color: 'ivory', backgroundColor: 'steelblue', margin: '10px 0px'}}>Login</Button><br></br>
                 <Link href="/"><Button style={{ color: 'ivory', backgroundColor: 'purple' }}>Back</Button></Link>
             </form>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                    Error: Wrong username or password. Please try again.
+                </Alert>
+            </Snackbar>
         </div>
     )
 };
