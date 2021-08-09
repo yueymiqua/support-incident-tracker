@@ -38,26 +38,6 @@ const typeDefs = gql`
         getUserByUsername(username: String!, password: String!): User
     }
 
-    # input NewIncidentInput {
-    #     incidentId: ID!
-    #     description: String!
-    #     department: String!
-    #     priority: String!
-    #     initiator: String!
-    #     status: String!
-    #     creation_date: String!
-    #     updated_date: String
-    #     resolver: String
-    #     resolver_comments: String
-    # }
-
-    # input NewUserInput {
-    #     userId: ID!
-    #     username: String!
-    #     password: String!
-    #     department: String!
-    # }
-
     type Mutation {
         addIncident(incidentId: ID!, description: String!, department: String!, priority: String!, initiator: String!, status: String!, creation_date: String!): Incident!
         updateIncident(incidentId: ID!, status: String, updated_date: String, resolver: String, resolver_comments: String): Incident!

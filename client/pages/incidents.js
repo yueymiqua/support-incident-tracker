@@ -46,7 +46,7 @@ const Incidents = () => {
 
     const submit = e => {
         e.preventDefault()
-        onSubmit({currentStatus, updated_date, currentResolver, currentResolverComments})
+        onSubmit({currentStatus, updatedDate, currentResolver, currentResolverComments})
     }
 
     const handleClose = () => {

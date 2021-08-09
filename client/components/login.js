@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Input, InputLabel, FormControl, Button } from '@material-ui/core';
 import Link from 'next/link';
